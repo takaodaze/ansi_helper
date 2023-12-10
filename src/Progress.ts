@@ -1,7 +1,7 @@
 import { ANSIEscSeqHelper } from './ANSIEscSeqHelper'
 import { CharRenderer } from './CharRenderer'
 
-export class ProgressBar {
+export class Progress {
   private currentProgress: number = 0 // < whole
   private readonly whole: number
   private readonly charRenderer: CharRenderer
@@ -10,6 +10,10 @@ export class ProgressBar {
     this.whole = wholeAmount
     this.charRenderer = new CharRenderer()
     ANSIEscSeqHelper.saveCursor()
+  }
+
+  isComplete (): boolean {
+    return this.whole === this.currentProgress
   }
 
   incrementProgress (): void {

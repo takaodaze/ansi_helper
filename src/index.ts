@@ -1,7 +1,7 @@
 import { CharStyle, Color } from './ANSICode'
 import { ANSIEscSeqHelper } from './ANSIEscSeqHelper'
 import { CharRenderer } from './CharRenderer'
-import { ProgressBar } from './ProgressBar'
+import { Progress } from './Progress'
 import { sleep } from './sleep'
 
 async function main (): Promise<void> {
@@ -21,15 +21,16 @@ async function main (): Promise<void> {
   ANSIEscSeqHelper.resetCharAllStyle()
   charRederer.writeLine('aaa')
 
-  const progressBar = new ProgressBar(10000)
+  const progress = new Progress(1000)
   let n = 0
-  while (true) {
+  while (!progress.isComplete()) {
     n++
-    progressBar.incrementProgress()
-    if (n % 3 === 0) progressBar.message(`${n}`)
-    progressBar.render()
-    await sleep(1000)
+    progress.incrementProgress()
+    if (n % 100 === 0) progress.message(`${n}:⭐`)
+    progress.render()
+    await sleep(1)
   }
+  charRederer.newLine()
 }
 
 void (async () => {

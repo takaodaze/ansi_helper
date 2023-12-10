@@ -26,4 +26,8 @@ export class CharRenderer {
     stdout.write(text)
     stdout.write('\n')
   }
+
+  newLine (): void {
+    stdout.write('\n')
+  }
 }
