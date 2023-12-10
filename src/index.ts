@@ -1,11 +1,13 @@
 import { ANSIEscSeqHelper } from './ANSIEscSeqHelper'
+import { PromptHelper } from './PromptHelper'
+import { sleep } from './sleep'
 
-process.stdout.write('hoge')
-ANSIEscSeqHelper.moveHeadLine()
-ANSIEscSeqHelper.eraseCurrentLine()
-process.stdout.write('fooo\n')
-process.stdout.write('var\n')
+async function main (): Promise<void> {
+  const clearLoading = ANSIEscSeqHelper.spin()
+  await sleep(1000)
+  clearLoading()
+}
 
-const clear = ANSIEscSeqHelper.loadingSpin()
-
-setTimeout(() => { clear() }, 1000)
+void (async () => {
+  await main()
+})()

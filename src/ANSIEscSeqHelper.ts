@@ -1,10 +1,10 @@
+import { stdout } from 'node:process'
+import { CharStyle, Color } from './ANSICode'
 const prefix = '\x1B'
 
 const issueAnsiEscSeq = (arg: string): void => {
-  process.stdout.write(`${prefix}${arg}`)
+  stdout.write(`${prefix}${arg}`)
 }
-
-const spinCharactors = ['⠋', '⠙', '⠹', '⠸', '⠼', '⠴', '⠦', '⠧', '⠇', '⠏']
 
 export const ANSIEscSeqHelper = {
   moveHeadLine (): void {
@@ -16,7 +16,7 @@ export const ANSIEscSeqHelper = {
   },
 
   resetCharStyle (): void {
-    issueAnsiEscSeq('[0m') // with cursor style
+    issueAnsiEscSeq('[0m')
   },
 
   saveCursor (): void {
@@ -27,19 +27,34 @@ export const ANSIEscSeqHelper = {
     issueAnsiEscSeq('[u')
   },
 
-  setInvisibleCursor (): void {
+  makeInvisibleCursor (): void {
     issueAnsiEscSeq('[?25l')
   },
 
-  setVisibleCursor (): void {
+  makeVisibleCursor (): void {
     issueAnsiEscSeq('[?25h')
   },
 
-  loadingSpin (): () => void {
+  // TODO: test & 可変長引数
+  addCommandArg  (command: string, arg: string): string {
+    return command.length === 0 ? command + arg : command + ';' + arg
+  },
+
+  changeCharStyle (style?: CharStyle, color?: Color): void {
+    let command = ''
+
+    if (style != null) { command = this.addCommandArg(command, style.toANSICode()) }
+    if (color != null) { command = this.addCommandArg(command, color.toANSICode()) }
+
+    issueAnsiEscSeq('[' + command + 'm')
+  },
+
+  spin (): () => void {
+    const spinCharactors = ['⠋', '⠙', '⠹', '⠸', '⠼', '⠴', '⠦', '⠧', '⠇', '⠏']
     let spinCount = 0
-    issueAnsiEscSeq('[1;35m')
+    this.changeCharStyle(new CharStyle('bold'), new Color('magenta'))
     this.saveCursor()
-    this.setInvisibleCursor()
+    this.makeInvisibleCursor()
 
     const timeout = setInterval(() => {
       process.stdout.write(spinCharactors[spinCount++])
@@ -51,7 +66,7 @@ export const ANSIEscSeqHelper = {
       clearTimeout(timeout)
       process.stdout.write('\n')
       this.resetCharStyle()
-      process.stdout.write('done!\n')
+      this.makeVisibleCursor()
     }
 
     return stopSpin
