@@ -2,7 +2,7 @@ import { stdout } from 'process'
 import { ANSIEscSeqHelper } from './ANSIEscSeqHelper'
 const INDENT_SIZE = 4
 
-class CharRenderer {
+export class CharRenderer {
   indent: number = 0
 
   constructor (indent?: number) {
@@ -18,6 +18,8 @@ class CharRenderer {
   }
 
   writeLine (text: string): void {
+    // init cursor
+    ANSIEscSeqHelper.moveCursorHeadLine()
     // indent
     ANSIEscSeqHelper.moveCursorColumn(this.indent)
     // write text
@@ -25,5 +27,3 @@ class CharRenderer {
     stdout.write('\n')
   }
 }
-
-export const charRederer = new CharRenderer()
