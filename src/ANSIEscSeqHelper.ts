@@ -21,7 +21,7 @@ export const ANSIEscSeqHelper = {
     issueAnsiEscSeq('[2K')
   },
 
-  resetCharStyle (): void {
+  resetCharAllStyle (): void {
     issueAnsiEscSeq('[0m')
   },
 
@@ -41,24 +41,23 @@ export const ANSIEscSeqHelper = {
     issueAnsiEscSeq('[?25h')
   },
 
-  // TODO: test & 可変長引数
   addCommandArg  (command: string, arg: string): string {
     return command.length === 0 ? command + arg : command + ';' + arg
   },
 
-  changeCharStyle (style?: CharStyle, color?: Color): void {
-    let command = ''
+  changeColor (color: Color): void {
+    issueAnsiEscSeq('[' + color.toANSICode() + 'm')
+  },
 
-    if (style != null) { command = this.addCommandArg(command, style.toANSICode()) }
-    if (color != null) { command = this.addCommandArg(command, color.toANSICode()) }
-
-    issueAnsiEscSeq('[' + command + 'm')
+  changeCharStyle (style: CharStyle): void {
+    issueAnsiEscSeq('[' + style.toANSICode() + 'm')
   },
 
   spin (): () => void {
     const spinCharactors = ['⠋', '⠙', '⠹', '⠸', '⠼', '⠴', '⠦', '⠧', '⠇', '⠏']
     let spinCount = 0
-    this.changeCharStyle(new CharStyle('bold'), new Color('magenta'))
+    this.changeColor(new Color('magenta'))
+    this.changeCharStyle(new CharStyle('bold'))
     this.saveCursor()
     this.makeInvisibleCursor()
 
@@ -71,7 +70,7 @@ export const ANSIEscSeqHelper = {
     const stopSpin = (): void => {
       clearTimeout(timeout)
       process.stdout.write('\n')
-      this.resetCharStyle()
+      this.resetCharAllStyle()
       this.makeVisibleCursor()
     }
 
