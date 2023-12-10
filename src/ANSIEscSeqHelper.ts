@@ -2,13 +2,19 @@ import { stdout } from 'node:process'
 import { CharStyle, Color } from './ANSICode'
 const prefix = '\x1B'
 
-const issueAnsiEscSeq = (arg: string): void => {
+export const issueAnsiEscSeq = (arg: string): void => {
   stdout.write(`${prefix}${arg}`)
 }
 
 export const ANSIEscSeqHelper = {
-  moveHeadLine (): void {
+  moveCursorHeadLine (): void {
     issueAnsiEscSeq('[0G')
+  },
+
+  moveCursorColumn (column: number) {
+    if (column < 1) return // 0以下でもカーソルが進んでしまうので回避策
+
+    issueAnsiEscSeq(`[${column}C`)
   },
 
   eraseCurrentLine (): void {

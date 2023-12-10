@@ -1,11 +1,19 @@
-import { ANSIEscSeqHelper } from './ANSIEscSeqHelper'
-import { PromptHelper } from './PromptHelper'
-import { sleep } from './sleep'
+import { charRederer } from './CharRenderer'
 
 async function main (): Promise<void> {
-  const clearLoading = ANSIEscSeqHelper.spin()
-  await sleep(1000)
-  clearLoading()
+  process.stdout.write('start')
+  charRederer.writeLine('aaa')
+  charRederer.addIndent()
+  charRederer.writeLine('aaa')
+  charRederer.addIndent()
+  charRederer.writeLine('aaa')
+  charRederer.reduceIndent()
+  charRederer.writeLine('aaa')
+  charRederer.reduceIndent()
+  charRederer.writeLine('aaa')
+  charRederer.reduceIndent()
+  charRederer.reduceIndent()
+  charRederer.writeLine('aaa')
 }
 
 void (async () => {
