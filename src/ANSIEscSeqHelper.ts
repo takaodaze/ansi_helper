@@ -41,10 +41,6 @@ export const ANSIEscSeqHelper = {
     issueAnsiEscSeq('[?25h')
   },
 
-  addCommandArg  (command: string, arg: string): string {
-    return command.length === 0 ? command + arg : command + ';' + arg
-  },
-
   changeColor (color: Color): void {
     issueAnsiEscSeq('[' + color.toANSICode() + 'm')
   },
