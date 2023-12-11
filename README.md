@@ -28,7 +28,7 @@ if (require.main === module) {
 
 ```
 #### output
-
+![confirm](https://github.com/takaodaze/rich-cli/assets/42061897/49e80ed4-1f6a-41a4-b81e-08d8cb4f390f)
 
 ### CharRenderer
 ```ts
@@ -60,6 +60,7 @@ if (require.main === module) {
 
 ```
 #### output
+![char](https://github.com/takaodaze/rich-cli/assets/42061897/491450da-ac8c-4237-9af1-90d859893967)
 
 
 ### Progress
@@ -96,6 +97,7 @@ if (require.main === module) {
 
 ```
 #### output
+![progress](https://github.com/takaodaze/rich-cli/assets/42061897/a84dcbfd-1d6e-4f5c-9f4f-fc657c18750b)
 
 ### Spinner
 ```ts
@@ -123,7 +125,7 @@ if (require.main === module) {
 
 ```
 #### output
-
+![spin](https://github.com/takaodaze/rich-cli/assets/42061897/a3f04047-daf3-46a2-87bf-596923595789)
 
 develop with
 ``` bash
