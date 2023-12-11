@@ -1,10 +1,9 @@
-import { CharStyle, Color } from './ANSICode'
-import { ANSIEscSeqHelper } from './ANSIEscSeqHelper'
-import { CharRenderer } from './CharRenderer'
+import { CharStyle, Color } from '../ANSICode'
+import { ANSIEscSeqHelper } from '../ANSIEscSeqHelper'
+import { CharRenderer } from '../CharRenderer'
 
 async function main (): Promise<void> {
   const charRederer = new CharRenderer()
-  charRederer.writeLine('aaa')
   charRederer.writeLine('aaa')
   charRederer.addIndent()
   charRederer.writeLine('aaa')
@@ -21,6 +20,8 @@ async function main (): Promise<void> {
   charRederer.writeLine('aaa')
 }
 
-void (async () => {
-  await main()
-})()
+if (require.main === module) {
+  main().catch((err) => {
+    console.error(err)
+  })
+}

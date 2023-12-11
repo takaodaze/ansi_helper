@@ -6,6 +6,8 @@
   "scripts": {
     "build": "tsc",
     "dev": "ts-node ./src/index.ts",
+    "sample:progress": "ts-node ./src/sample/progress.ts",
+    "sample:charRenderer": "ts-node ./src/sample/charRenderer.ts",
     "test": "jest"
   },
   "keywords": [],

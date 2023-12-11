@@ -24,10 +24,11 @@ export class CharRenderer {
     ANSIEscSeqHelper.moveCursorColumn(this.indent)
     // write text
     stdout.write(text)
-    stdout.write('\n')
+    // new line
+    this.newLine()
   }
 
   newLine (): void {
-    stdout.write('\n')
+    ANSIEscSeqHelper.newLine()
   }
 }

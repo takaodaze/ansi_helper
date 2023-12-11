@@ -1,3 +1,4 @@
+import { Color } from './ANSICode'
 import { ANSIEscSeqHelper } from './ANSIEscSeqHelper'
 import { CharRenderer } from './CharRenderer'
 
@@ -9,7 +10,6 @@ export class Progress {
   constructor (wholeAmount: number) {
     this.whole = wholeAmount
     this.charRenderer = new CharRenderer()
-    ANSIEscSeqHelper.saveCursor()
   }
 
   isComplete (): boolean {
@@ -21,12 +21,39 @@ export class Progress {
     this.currentProgress = Math.min(incremented, this.whole)
   }
 
+  private prograssRate (): number {
+    return this.currentProgress / this.whole
+  }
+
+  private readblePrograssRate (): string {
+    return `${(this.prograssRate() * 100).toFixed(1)}%`
+  }
+
   render (): void {
-    // TODO: ゲージの実装
+    ANSIEscSeqHelper.makeInvisibleCursor()
     ANSIEscSeqHelper.eraseCurrentLine()
-    ANSIEscSeqHelper.moveSavedCursor()
-    const content = `[${this.currentProgress}/${this.whole}]`
-    process.stdout.write(content)
+    ANSIEscSeqHelper.moveCursorHeadLine()
+    this.renderGauge()
+    process.stdout.write(`${this.currentProgress}/${this.whole}(${this.readblePrograssRate()})`)
+    ANSIEscSeqHelper.makeVisibleCursor()
+  }
+
+  private renderGauge (): void {
+    const gaugeResolution = 30
+    const rate = Math.floor(this.prograssRate() * gaugeResolution)
+
+    ANSIEscSeqHelper.changeColor(new Color('reset'))
+
+    process.stdout.write('[')
+    ANSIEscSeqHelper.changeColor(new Color('green'))
+    for (let i = 0; i < rate; i++) {
+      process.stdout.write('|')
+    }
+    ANSIEscSeqHelper.changeColor(new Color('reset'))
+    for (let i = 0; i < gaugeResolution - rate; i++) {
+      process.stdout.write('-')
+    }
+    process.stdout.write('] ')
   }
 
   message (msg: string): void {

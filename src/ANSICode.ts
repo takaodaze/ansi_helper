@@ -2,17 +2,29 @@ export interface ANSICode {
   toANSICode: () => string
 }
 
+const COLOR_CODE_MAP = {
+  black: '30',
+  red: '31',
+  green: '32',
+  yellow: '33',
+  blue: '34',
+  magenta: '35',
+  cyan: '36',
+  white: '37',
+  default: '39',
+  reset: '0'
+}
+
 export class Color implements ANSICode {
-  constructor (private readonly value: 'red' | 'green' | 'magenta') {}
+  constructor (private readonly value: keyof typeof COLOR_CODE_MAP) {}
 
   toANSICode (): string {
-    const c = this.value
-    if (c === 'green') return '32'
-    else if (c === 'red') return '31'
-    else if (c === 'magenta') return '35'
-    else {
+    const colorCode = COLOR_CODE_MAP[this.value]
+    if (colorCode == null) {
       throw new Error('invalid args')
     }
+
+    return colorCode
   }
 }
 
